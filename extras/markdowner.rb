@@ -50,6 +50,6 @@ if false
     end
 end
 
-    ng.at_css("body").inner_html
+    ng.at_css("body").inner_html.chomp
   end
 end
