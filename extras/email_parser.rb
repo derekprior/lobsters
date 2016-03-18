@@ -13,7 +13,8 @@ class EmailParser
       Utils.silence_stream(STDERR) do
         @email = Mail.read_from_string(email_text)
       end
-    rescue
+    rescue StandardError => ex
+      Rails.logger.error "Unable to read email. #{ex.message}"
     end
 
     @sending_user = nil
