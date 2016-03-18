@@ -27,11 +27,6 @@ module Lobsters
     config.action_controller.action_on_unpermitted_parameters = :raise
 
     config.cache_store = :file_store, "#{config.root}/tmp/cache/"
-
-    # Tell ActiveRecord not to suppress errors in `after_rollback` and
-    # `after_commit` callbacks. This will be default in Rails 5, but enabling
-    # now is good practice and avoids deprecations.
-    config.active_record.raise_in_transactional_callbacks = true
   end
 end
 
