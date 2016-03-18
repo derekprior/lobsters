@@ -2,22 +2,22 @@ require "spec_helper"
 
 describe User do
   it "has a valid username" do
-    expect { User.make!(:username => nil) }.to raise_error
-    expect { User.make!(:username => "") }.to raise_error
-    expect { User.make!(:username => "*") }.to raise_error
+    expect { User.make!(:username => nil) }.to raise_error ActiveRecord::RecordInvalid
+    expect { User.make!(:username => "") }.to raise_error ActiveRecord::RecordInvalid
+    expect { User.make!(:username => "*") }.to raise_error ActiveRecord::RecordInvalid
 
     User.make!(:username => "test")
-    expect { User.make!(:username => "test") }.to raise_error
+    expect { User.make!(:username => "test") }.to raise_error ActiveRecord::RecordInvalid
   end
 
   it "has a valid email address" do
     User.make!(:email => "user@example.com")
 
     # duplicate
-    expect { User.make!(:email => "user@example.com") }.to raise_error
+    expect { User.make!(:email => "user@example.com") }.to raise_error ActiveRecord::RecordInvalid
 
     # bad address
-    expect { User.make!(:email => "user@") }.to raise_error
+    expect { User.make!(:email => "user@") }.to raise_error ActiveRecord::RecordInvalid
   end
 
   it "authenticates properly" do

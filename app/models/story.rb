@@ -523,7 +523,7 @@ class Story < ActiveRecord::Base
       end
     end
 
-    new_tag_names_a.each do |tag_name|
+    Array(new_tag_names_a).each do |tag_name|
       if tag_name.to_s != "" && !self.tags.exists?(:tag => tag_name)
         if t = Tag.active.where(:tag => tag_name).first
           # we can't lookup whether the user is allowed to use this tag yet

@@ -9,38 +9,38 @@ describe Story do
 
   it "requires a url or a description" do
     expect { Story.make!(:title => "hello", :url => "",
-      :description => "") }.to raise_error
+      :description => "") }.to raise_error ActiveRecord::RecordInvalid
 
     expect { Story.make!(:title => "hello", :description => "hi", :url => nil)
-      }.to_not raise_error
+      }.not_to raise_error
 
     expect { Story.make!(:title => "hello", :url => "http://ex.com/",
-      :description => nil) }.to_not raise_error
+      :description => nil) }.not_to raise_error
   end
 
   it "does not allow too-short titles" do
-    expect { Story.make!(:title => "") }.to raise_error
-    expect { Story.make!(:title => "hi") }.to raise_error
-    expect { Story.make!(:title => "hello") }.to_not raise_error
+    expect { Story.make!(:title => "") }.to raise_error ActiveRecord::RecordInvalid
+    expect { Story.make!(:title => "hi") }.to raise_error ActiveRecord::RecordInvalid
+    expect { Story.make!(:title => "hello") }.not_to raise_error
   end
 
   it "does not allow too-long titles" do
-    expect { Story.make!(:title => ("hello" * 100)) }.to raise_error
+    expect { Story.make!(:title => ("hello" * 100)) }.to raise_error ActiveRecord::RecordInvalid
   end
 
   it "must have at least one tag" do
-    expect { Story.make!(:tags_a => nil) }.to raise_error
-    expect { Story.make!(:tags_a => [ "", " " ]) }.to raise_error
+    expect { Story.make!(:tags_a => nil) }.to raise_error ActiveRecord::RecordInvalid
+    expect { Story.make!(:tags_a => [ "", " " ]) }.to raise_error ActiveRecord::RecordInvalid
 
-    expect { Story.make!(:tags_a => [ "", "tag1" ]) }.to_not raise_error
+    expect { Story.make!(:tags_a => [ "", "tag1" ]) }.not_to raise_error
   end
 
   it "checks for invalid urls" do
     expect { Story.make!(:title => "test", :url => "http://gooses.com/")
-      }.to_not raise_error
+      }.not_to raise_error
 
-    expect { Story.make!(:title => "test", url => "ftp://gooses/")
-      }.to raise_error
+    expect { Story.make!(:title => "test", :url => "ftp://gooses/")
+      }.to raise_error ActiveRecord::RecordInvalid
   end
 
   it "checks for a previously posted story with same url" do
@@ -50,12 +50,12 @@ describe Story do
     Story.count.should == 1
 
     expect { Story.make!(:title => "flim flam 2",
-      :url => "http://example.com/") }.to raise_error
+      :url => "http://example.com/") }.to raise_error ActiveRecord::RecordInvalid
 
     Story.count.should == 1
 
     expect { Story.make!(:title => "flim flam 2",
-      :url => "http://www.example.com/") }.to raise_error
+      :url => "http://www.example.com/") }.to raise_error ActiveRecord::RecordInvalid
 
     Story.count.should == 1
   end
